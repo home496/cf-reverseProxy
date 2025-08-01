@@ -6,7 +6,7 @@ const config = {
     },
     'p.cf21-dav.workers.dev': {
         upstream: 'www.baidu.com',
-        upstream_path: '/'
+        upstream_path: ''
     }
 }
 
@@ -58,6 +58,7 @@ async function fetchAndApply(request) {
     }
 
     url.host = upstream_domain;
+
     if (url.pathname == '/') {
         url.pathname = upstream_path;
     } else {
@@ -142,7 +143,9 @@ async function replace_response_text(response, upstream_domain, upstream_path, h
         text = text.replace(re, j);
     }
     
-    text = text.replace(new RegExp(upstream_path, 'g'), '/');
+    if(upstream_path !== '/' && upstream_path !== ''){
+        text = text.replace(new RegExp(upstream_path, 'g'), '/');
+    }
     return text;
 }
 
